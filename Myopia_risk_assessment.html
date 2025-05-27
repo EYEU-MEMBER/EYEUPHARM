@@ -54,6 +54,7 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      overflow-y: auto;
     }
 
     form {
@@ -87,6 +88,23 @@
       border: 1px solid #ccc;
     }
 
+    /* 이미지가 select 아래에 위치 */
+    .axial-image-container {
+      flex: none;
+      margin-left: calc(1rem + 6px); /* select 왼쪽 여백 맞춤 */
+      margin-top: 6px;
+      max-width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .axial-image-container img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
     button {
       padding: 6px 12px;
       font-size: 0.9em;
@@ -112,6 +130,11 @@
       padding: 8px 12px;
       border-radius: 10px;
       box-shadow: 0 0 6px rgba(0,0,0,0.05);
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      white-space: pre-line;
     }
 
     .bar-wrapper {
@@ -142,27 +165,36 @@
       height: 18px;
       background: black;
       border-radius: 2px;
+      transition: left 0.3s ease;
     }
 
     .bottom-bar {
       height: 40px;
-      background: #103472 url('logo.png') no-repeat right center/contain;
+      background: #103472;
       border-bottom-left-radius: 20px;
       border-bottom-right-radius: 20px;
       display: flex;
-      justify-content: center;
+      justify-content: left;
       align-items: center;
       position: relative;
+      padding-right: 80px;
     }
 
     .bottom-bar span {
-      font-size: 0.7em;
+      font-size: 0.4em;
       color: #ffffff;
-      /*background: rgba(0, 0, 0, 0.3);*/
       padding: 4px 8px;
       border-radius: 10px;
       font-style: italic;
       text-align: center;
+    }
+
+    .bottom-logo {
+      position: absolute;
+      right: 12px;
+      height: 70%;
+      max-height: 28px;
+      object-fit: contain;
     }
   </style>
 </head>
@@ -175,74 +207,79 @@
     <div class="content">
       <form id="riskForm">
         <div class="form-group">
-          <label><i class="fas fa-globe-asia"></i> 인종</label>
+          <label><i class="fas fa-globe-asia"></i>인종</label>
           <select name="race" required>
-            <option disabled selected hidden>선택하세요</option>
-            <option value="4">아시아인 (4점)</option>
-            <option value="3">동인도 (3점)</option>
-            <option value="2">백인/히스패닉/아프리카계 미국인 (2점)</option>
+            <option value="" selected>선택하세요</option>
+            <option value="4">아시아인</option>
+            <option value="3">동인도</option>
+            <option value="2">백인/히스패닉/아프리카계 미국인</option>
           </select>
         </div>
         <div class="form-group">
-          <label><i class="fas fa-venus-mars"></i> 성별</label>
+          <label><i class="fas fa-venus-mars"></i>성별</label>
           <select name="gender" required>
-            <option disabled selected hidden>선택하세요</option>
-            <option value="3">여성 (3점)</option>
-            <option value="2">남성 (2점)</option>
+            <option value="" selected>선택하세요</option>
+            <option value="3">여성</option>
+            <option value="2">남성</option>
           </select>
         </div>
         <div class="form-group">
-          <label><i class="fas fa-child"></i> 발병 연령</label>
+          <label><i class="fas fa-child"></i>근시 발병 연령</label>
           <select name="onset" required>
-            <option disabled selected hidden>선택하세요</option>
-            <option value="4">6세 이하 (4점)</option>
-            <option value="3">7-9세 (3점)</option>
-            <option value="2">10-11세 (2점)</option>
-            <option value="1">12세 이상 (1점)</option>
+            <option value="" selected>선택하세요</option>
+            <option value="4">6세 이하</option>
+            <option value="3">7-9세</option>
+            <option value="2">10-11세</option>
+            <option value="1">12세 이상</option>
           </select>
         </div>
         <div class="form-group">
-          <label><i class="fas fa-users"></i> 부모 근시</label>
+          <label><i class="fas fa-users"></i>부모 근시 여부</label>
           <select name="parent" required>
-            <option disabled selected hidden>선택하세요</option>
-            <option value="4">양쪽 부모 근시 (4점)</option>
-            <option value="3">부모 중 한 명 근시 (3점)</option>
-            <option value="1">부모 없음 (1점)</option>
+            <option value="" selected>선택하세요</option>
+            <option value="4">양쪽 부모 근시</option>
+            <option value="3">부모 중 한 명 근시</option>
+            <option value="1">부모 근시 없음</option>
           </select>
         </div>
         <div class="form-group">
-          <label><i class="fas fa-sun"></i> 야외 활동</label>
+          <label><i class="fas fa-sun"></i>야외 활동 시간(일주일 기준)</label>
           <select name="outdoor" required>
-            <option disabled selected hidden>선택하세요</option>
-            <option value="4">0-3시간 (4점)</option>
-            <option value="3">4-6시간 (3점)</option>
-            <option value="2">7-9시간 (2점)</option>
-            <option value="1">10-13시간 (1점)</option>
-            <option value="0">14시간 이상 (0점)</option>
+            <option value="" selected>선택하세요</option>
+            <option value="4">0-3시간</option>
+            <option value="3">4-6시간</option>
+            <option value="2">7-9시간</option>
+            <option value="1">10-13시간</option>
+            <option value="0">14시간 이상</option>
           </select>
         </div>
         <div class="form-group">
-          <label><i class="fas fa-book"></i> 근거리 작업</label>
+          <label><i class="fas fa-book"></i>근거리 작업 시간(일주일 기준)</label>
           <select name="nearwork" required>
-            <option disabled selected hidden>선택하세요</option>
-            <option value="4">21시간 이상 (4점)</option>
-            <option value="3">17-20시간 (3점)</option>
-            <option value="2">12-16시간 (2점)</option>
-            <option value="1">8-11시간 (1점)</option>
-            <option value="0">7시간 미만 (0점)</option>
+            <option value="" selected>선택하세요</option>
+            <option value="4">21시간 이상</option>
+            <option value="3">17-20시간</option>
+            <option value="2">12-16시간</option>
+            <option value="1">8-11시간</option>
+            <option value="0">7시간 미만</option>
           </select>
         </div>
         <div class="form-group">
-          <label><i class="fas fa-ruler-horizontal"></i> 축 길이</label>
+          <label><i class="fas fa-ruler-horizontal"></i>안축장 길이(백분위 점수)</label>
           <select name="axial" required>
-            <option disabled selected hidden>선택하세요</option>
-            <option value="4">69 (4점)</option>
-            <option value="3">50-69 (3점)</option>
-            <option value="2">35-49 (2점)</option>
-            <option value="1">20-34 (1점)</option>
-            <option value="0">20 미만 (0점)</option>
+            <option value="" selected>선택하세요</option>
+            <option value="4">69 초과</option>
+            <option value="3">50-69</option>
+            <option value="2">35-49</option>
+            <option value="1">20-34</option>
+            <option value="0">20 미만</option>
           </select>
         </div>
+        <!-- 이미지 추가 영역 -->
+        <div class="axial-image-container">
+          <img src="Percentile_Axial_Length_Chart_WhiteBG.jpg" alt="안축장 길이 백분위 차트">
+        </div>
+
         <button type="button" onclick="calculateScore()">총점 계산</button>
       </form>
       <div id="result"></div>
@@ -256,6 +293,7 @@
     </div>
     <div class="bottom-bar">
       <span>(Reference: The Lipson Koffler Guide to Assessing Risk for Myopia Management)</span>
+      <img src="logo.png" alt="Logo" class="bottom-logo">
     </div>
   </div>
 
@@ -268,7 +306,7 @@
       for (let i = 0; i < form.elements.length; i++) {
         const el = form.elements[i];
         if (el.type === 'select-one') {
-          if (!el.value) {
+          if (el.value === "") {
             allSelected = false;
             break;
           }
@@ -276,8 +314,11 @@
         }
       }
 
+      const resultDiv = document.getElementById('result');
+
       if (!allSelected) {
-        alert('모든 항목을 선택해주세요.');
+        resultDiv.innerHTML = '<span style="color: red;">⚠ 모든 항목을 선택해주세요.</span>';
+        document.getElementById('indicator').style.left = '0px';
         return;
       }
 
@@ -286,7 +327,7 @@
       else if (total <= 14) risk = '중위험';
       else risk = '고위험';
 
-      document.getElementById('result').innerText = `총점: ${total}점\n위험도: ${risk}`;
+      resultDiv.innerHTML = `총점: ${total}점\n위험도: ${risk}`;
 
       const barWidth = document.getElementById('bar').offsetWidth;
       const leftPercent = (total / 24);
